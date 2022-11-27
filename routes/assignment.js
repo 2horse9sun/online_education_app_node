@@ -53,13 +53,36 @@ router.get('/getAllAssignmentListByStudentId', (req, res, next) => {
     })
 });
 
-router.get('/getAssignmentFileSignedUrl', (req, res, next) => {
-    let {file_name} = req.query;
+router.get('/getAssignmentFileGetObjectUrl', (req, res, next) => {
+    let {fileName} = req.query;
     try {
         const signedUrl = s3.getSignedUrl('getObject', {
             Bucket: BUCKET_NAME,
-            Key: `${UPLOAD_BASE_URL}${file_name}`,
+            Key: `${UPLOAD_BASE_URL}${fileName}`,
             Expires: EXPIRE_TIME
+        });
+        return res.json(
+                new SuccessResponse({
+                    signedUrl,
+                    expireTime: EXPIRE_TIME
+                })
+            );
+    } catch (e) {
+        console.log(e);
+        res.json(
+            new ErrorResponse(e)
+        );
+    }
+});
+
+router.get('/getAssignmentFilePutObjectUrl', (req, res, next) => {
+    let {fileName, fileType} = req.query;
+    try {
+        const signedUrl = s3.getSignedUrl('putObject', {
+            Bucket: BUCKET_NAME,
+            Key: `${UPLOAD_BASE_URL}${fileName}`,
+            Expires: EXPIRE_TIME,
+            ContentType: fileType
         });
         return res.json(
                 new SuccessResponse({
