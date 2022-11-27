@@ -1,4 +1,4 @@
-const { ErrorModel } = require('../model/resModel')
+const {SuccessResponse, ErrorResponse} = require('../utils/ResponseModel');
 
 module.exports = (req, res, next) => {
     if (req.session.username) {
@@ -6,6 +6,6 @@ module.exports = (req, res, next) => {
         return
     }
     res.json(
-        new ErrorModel('未登录')
+        new ErrorResponse('Not login')
     )
 }

@@ -5,12 +5,15 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "cross-env NODE_ENV=dev nodemon ./bin/www",
-    "prd": "cross-env NODE_ENV=production nodemon ./bin/www"
+    "test": "cross-env NODE_ENV=test nodemon ./bin/www",
+    "prd": "cross-env NODE_ENV=prd nodemon ./bin/www"
   },
   "dependencies": {
+    "aws-sdk": "^2.1261.0",
     "connect-redis": "^3.4.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
     "express": "~4.16.0",
     "express-session": "^1.15.6",
     "http-errors": "~1.6.2",

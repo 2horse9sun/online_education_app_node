@@ -17,7 +17,7 @@ const getRecentAssignmentListByStudentId = (student_id, limit, offset) => {
     LEFT OUTER JOIN assignment_submission
     ON assignment_submission.assignment_id = assignment.id AND assignment_submission.student_id = ${student_id} 
     LEFT OUTER JOIN assignment_grade
-    ON assignment_grade.assignment_id = assignment.id AND assignment_grade.assignment_submission_id = assignment_submission.id AND assignment_grade.release_time < NOW()
+    ON assignment_grade.assignment_submission_id = assignment_submission.id AND assignment_grade.release_time < NOW()
     WHERE student_course.student_id=${student_id}
     AND assignment.release_time IS NOT NULL
     AND assignment.release_time < NOW()
@@ -45,7 +45,7 @@ const getAllAssignmentListByStudentId = (student_id, limit, offset) => {
     LEFT OUTER JOIN assignment_submission
     ON assignment_submission.assignment_id = assignment.id AND assignment_submission.student_id = ${student_id} 
     LEFT OUTER JOIN assignment_grade
-    ON assignment_grade.assignment_id = assignment.id AND assignment_grade.assignment_submission_id = assignment_submission.id AND assignment_grade.release_time < NOW()
+    ON assignment_grade.assignment_submission_id = assignment_submission.id AND assignment_grade.release_time < NOW()
     WHERE student_course.student_id=${student_id}
     AND assignment.release_time IS NOT NULL
     AND assignment.release_time < NOW()

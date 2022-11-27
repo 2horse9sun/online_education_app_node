@@ -1,8 +1,8 @@
 const Pool = require('pg').Pool
-const { PSQL_CONF } = require('../conf/db')
+const { DB_CONFIG } = require('../config/db')
 
 // 创建链接对象
-const pool = new Pool(PSQL_CONF)
+const pool = new Pool(DB_CONFIG)
 
 // 开始链接
 pool.connect()

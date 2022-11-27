@@ -1,39 +1,32 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var fs = require('fs');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+require('dotenv').config();
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 
-// var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
 const blogRouter = require('./routes/blog')
 const userRouter = require('./routes/user')
 const courseRouter = require('./routes/course')
 const assignmentRouter = require('./routes/assignment')
 
-var app = express();
+const app = express();
 
-// // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
 
-const ENV = process.env.NODE_ENV
-if (ENV !== 'production') {
-  // 开发环境 / 测试环境
-  app.use(logger('dev'));
-} else {
-  // 线上环境
-  const logFileName = path.join(__dirname, 'logs', 'access.log')
-  const writeStream = fs.createWriteStream(logFileName, {
-    flags: 'a'
-  })
-  app.use(logger('combined', {
-    stream: writeStream
-  }));
-}
+// logger
+app.use(logger('dev'));
+const logFileName = path.join(__dirname, 'logs', 'access.log')
+const writeStream = fs.createWriteStream(logFileName, {
+  flags: 'a'
+})
+app.use(logger('combined', {
+  stream: writeStream
+}));
+
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -54,15 +47,13 @@ app.use(cookieParser());
 //   store: sessionStore
 // }))
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
-app.use('/api/blog', blogRouter);
-app.use('/api/user', userRouter);
+// Routers
 app.use('/api/course', courseRouter);
 app.use('/api/assignment', assignmentRouter);
 
-
+// public resources
 // app.use('/public',express.static(__dirname + '/public'))
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,9 +62,8 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'dev' ? err : {};
+  res.locals.error = err;
 
   res.json({ error: err });
 });
