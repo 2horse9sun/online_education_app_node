@@ -4,7 +4,6 @@ const {
     getCourseListByStudentId
 } = require('../controller/course')
 const {SuccessResponse, ErrorResponse} = require('../utils/ResponseModel');
-const loginCheck = require('../middleware/loginCheck');
 
 
 router.get('/getCourseListByStudentId', (req, res, next) => {

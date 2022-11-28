@@ -8,10 +8,11 @@ const logger = require('morgan');
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 
-const blogRouter = require('./routes/blog')
-const userRouter = require('./routes/user')
-const courseRouter = require('./routes/course')
-const assignmentRouter = require('./routes/assignment')
+const blogRouter = require('./routes/blog');
+const userRouter = require('./routes/user');
+const courseRouter = require('./routes/course');
+const assignmentRouter = require('./routes/assignment');
+const s3Router = require('./routes/s3');
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.use(cookieParser());
 // Routers
 app.use('/api/course', courseRouter);
 app.use('/api/assignment', assignmentRouter);
+app.use('/api/s3', s3Router);
 
 // public resources
 // app.use('/public',express.static(__dirname + '/public'))

@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const {
     getRecentAssignmentListByStudentId,
-    getAllAssignmentListByStudentId
+    getAllAssignmentListByStudentId,
+    uploadAssignmentFile
 } = require('../controller/assignment')
 const {SuccessResponse, ErrorResponse} = require('../utils/ResponseModel');
-const loginCheck = require('../middleware/loginCheck');
 const {S3_CONFIG} = require('../config/s3');
 const AWS = require('aws-sdk');
 AWS.config.update({accessKeyId: S3_CONFIG.S3_ACCESS_KEY_ID, secretAccessKey: S3_CONFIG.S3_SECRET_ACCESS_KEY});
@@ -53,50 +53,22 @@ router.get('/getAllAssignmentListByStudentId', (req, res, next) => {
     })
 });
 
-router.get('/getAssignmentFileGetObjectUrl', (req, res, next) => {
-    let {fileName} = req.query;
-    try {
-        const signedUrl = s3.getSignedUrl('getObject', {
-            Bucket: BUCKET_NAME,
-            Key: `${UPLOAD_BASE_URL}${fileName}`,
-            Expires: EXPIRE_TIME
-        });
-        return res.json(
-                new SuccessResponse({
-                    signedUrl,
-                    expireTime: EXPIRE_TIME
-                })
-            );
-    } catch (e) {
+router.post('/uploadAssignmentFile', (req, res, next) => {
+    const result = uploadAssignmentFile(req.body);
+    return result.then(data => {
+        res.json(
+            new SuccessResponse(data)
+        );
+    })
+    .catch(e => {
         console.log(e);
         res.json(
             new ErrorResponse(e)
         );
-    }
+    })
 });
 
-router.get('/getAssignmentFilePutObjectUrl', (req, res, next) => {
-    let {fileName, fileType} = req.query;
-    try {
-        const signedUrl = s3.getSignedUrl('putObject', {
-            Bucket: BUCKET_NAME,
-            Key: `${UPLOAD_BASE_URL}${fileName}`,
-            Expires: EXPIRE_TIME,
-            ContentType: fileType
-        });
-        return res.json(
-                new SuccessResponse({
-                    signedUrl,
-                    expireTime: EXPIRE_TIME
-                })
-            );
-    } catch (e) {
-        console.log(e);
-        res.json(
-            new ErrorResponse(e)
-        );
-    }
-});
+
 
 
 
