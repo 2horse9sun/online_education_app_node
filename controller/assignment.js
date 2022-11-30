@@ -56,9 +56,7 @@ const getAllAssignmentListByStudentId = (student_id, limit, offset) => {
     return exec(sql);
 }
 
-const uploadAssignmentFile = (body) => {
-    const {assignment_id, hashed_file_name, file_type, file_size, owner_user_id} = body;
-    const file_name = xss(body.file_name);
+const uploadAssignmentFile = (assignment_id, file_name, hashed_file_name, file_type, file_size, owner_user_id) => {
     let sql = `INSERT INTO assignment_file (assignment_id, file_name, hashed_file_name, file_type, file_size, owner_user_id)
     values ('${assignment_id}', '${file_name}', '${hashed_file_name}', '${file_type}', '${file_size}', '${owner_user_id}');`;
 

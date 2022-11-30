@@ -13,6 +13,8 @@ const userRouter = require('./routes/user');
 const courseRouter = require('./routes/course');
 const assignmentRouter = require('./routes/assignment');
 const s3Router = require('./routes/s3');
+const categoryRouter = require('./routes/category');
+const lessonRouter = require('./routes/lesson');
 
 const app = express();
 
@@ -52,22 +54,24 @@ app.use(cookieParser());
 app.use('/api/course', courseRouter);
 app.use('/api/assignment', assignmentRouter);
 app.use('/api/s3', s3Router);
+app.use('/api/category', categoryRouter);
+app.use('/api/lesson', lessonRouter);
 
 // public resources
 // app.use('/public',express.static(__dirname + '/public'))
 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// // catch 404 and forward to error handler
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
-// error handler
-app.use(function(err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = err;
+// // error handler
+// app.use(function(err, req, res, next) {
+//   res.locals.message = err.message;
+//   res.locals.error = err;
 
-  res.json({ error: err });
-});
+//   res.json({ error: err });
+// });
 
 module.exports = app;

@@ -54,7 +54,9 @@ router.get('/getAllAssignmentListByStudentId', (req, res, next) => {
 });
 
 router.post('/uploadAssignmentFile', (req, res, next) => {
-    const result = uploadAssignmentFile(req.body);
+    const {assignment_id, hashed_file_name, file_type, file_size, owner_user_id} = body;
+    const file_name = xss(body.file_name);
+    const result = uploadAssignmentFile(assignment_id, file_name, hashed_file_name, file_type, file_size, owner_user_id);
     return result.then(data => {
         res.json(
             new SuccessResponse(data)
