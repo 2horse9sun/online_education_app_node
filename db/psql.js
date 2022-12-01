@@ -1,13 +1,10 @@
-const Pool = require('pg').Pool
-const { DB_CONFIG } = require('../config/db')
+const Pool = require('pg').Pool;
+const { DB_CONFIG } = require('../config/db');
 
-// 创建链接对象
-const pool = new Pool(DB_CONFIG)
+const pool = new Pool(DB_CONFIG);
 
-// 开始链接
-pool.connect()
+pool.connect();
 
-// 统一执行 sql 的函数
 function exec(sql) {
     const promise = new Promise((resolve, reject) => {
         pool.query(sql, (err, result) => {
@@ -15,10 +12,10 @@ function exec(sql) {
                 reject(err)
                 return
             }
-            resolve(result)
+            resolve(result);
         })
     })
-    return promise
+    return promise;
 }
 
 module.exports = {

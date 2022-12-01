@@ -1,8 +1,13 @@
+const xss = require('xss');
 const express = require('express');
 const router = express.Router();
 const {
-    getRecentAssignmentListByStudentId,
+    getAllAssignmentListByStudentIdAndCourseId,
+    getAssignmentDetailByStudentIdAndAssignmentId,
+    getAssignmentFileByAssignmentId,
+    getAllRecentAssignmentListByStudentId,
     getAllAssignmentListByStudentId,
+    addAssignment,
     uploadAssignmentFile
 } = require('../controller/assignment')
 const {SuccessResponse, ErrorResponse} = require('../utils/ResponseModel');
@@ -15,59 +20,48 @@ const BUCKET_NAME = S3_CONFIG.S3_BUCKET;
 const UPLOAD_BASE_URL = 'assignment/upload/';
 const EXPIRE_TIME = 60 * 5;
 
-router.get('/getRecentAssignmentListByStudentId', (req, res, next) => {
-    let {student_id, limit, offset} = req.query;
-    limit = (req.query.limit === undefined || req.query.limit === "undefined") ? 1000 : req.query.limit;
-    offset = (req.query.offset === undefined || req.query.offset === "undefined") ? 0 : req.query.offset;
-
-    const result = getRecentAssignmentListByStudentId(student_id, limit, offset);
-    return result.then(data => {
-        res.json(
-            new SuccessResponse(data.rows)
-        );
-    })
-    .catch(e => {
-        console.log(e);
-        res.json(
-            new ErrorResponse(e)
-        );
-    })
+router.get('/getAllAssignmentListByStudentIdAndCourseId', async (req, res, next) => {
+    let {student_id, course_id} = req.query;
+    const result = await getAllAssignmentListByStudentIdAndCourseId(student_id, course_id);
+    return res.json(result);
 });
 
-router.get('/getAllAssignmentListByStudentId', (req, res, next) => {
-    let {student_id, limit, offset} = req.query;
-    limit = (req.query.limit === undefined || req.query.limit === "undefined") ? 1000 : req.query.limit;
-    offset = (req.query.offset === undefined || req.query.offset === "undefined") ? 0 : req.query.offset;
-
-    const result = getAllAssignmentListByStudentId(student_id, limit, offset)
-    return result.then(data => {
-        res.json(
-            new SuccessResponse(data.rows)
-        );
-    })
-    .catch(e => {
-        console.log(e);
-        res.json(
-            new ErrorResponse(e)
-        );
-    })
+router.get('/getAssignmentDetailByStudentIdAndAssignmentId', async (req, res, next) => {
+    let {student_id, assignment_id} = req.query;
+    const result = await getAssignmentDetailByStudentIdAndAssignmentId(student_id, assignment_id);
+    return res.json(result);
 });
 
-router.post('/uploadAssignmentFile', (req, res, next) => {
-    const {assignment_id, hashed_file_name, file_type, file_size, owner_user_id} = body;
-    const file_name = xss(body.file_name);
-    const result = uploadAssignmentFile(assignment_id, file_name, hashed_file_name, file_type, file_size, owner_user_id);
-    return result.then(data => {
-        res.json(
-            new SuccessResponse(data)
-        );
-    })
-    .catch(e => {
-        console.log(e);
-        res.json(
-            new ErrorResponse(e)
-        );
-    })
+router.get('/getAssignmentFileByAssignmentId', async (req, res, next) => {
+    let {assignment_id} = req.query;
+    const result = await getAssignmentFileByAssignmentId(assignment_id);
+    return res.json(result);
+});
+
+router.get('/getAllRecentAssignmentListByStudentId', async (req, res, next) => {
+    let {student_id} = req.query;
+    const result = await getAllRecentAssignmentListByStudentId(student_id);
+    return res.json(result);
+});
+
+router.get('/getAllAssignmentListByStudentId', async (req, res, next) => {
+    let {student_id} = req.query;
+    const result = await getAllAssignmentListByStudentId(student_id)
+    return res.json(result);
+});
+
+router.post('/addAssignment', async (req, res, next) => {
+    const title = xss(req.body.title);
+    const {content, course_id, owner_user_id, due_time, release_time} = req.body;
+    const result = await addAssignment(title, JSON.stringify(content), course_id, owner_user_id, due_time, release_time);
+    return res.json(result);
+});
+
+router.post('/uploadAssignmentFile', async (req, res, next) => {
+    const {assignment_id, hashed_file_name, file_type, file_size, owner_user_id} = req.body;
+    const file_name = xss(req.body.file_name);
+    const result = await uploadAssignmentFile(assignment_id, file_name, hashed_file_name, file_type, file_size, owner_user_id);
+    return res.json(result);
 });
 
 

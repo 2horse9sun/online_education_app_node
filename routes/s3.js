@@ -9,10 +9,10 @@ const s3 = new AWS.S3();
 const BUCKET_NAME = S3_CONFIG.S3_BUCKET;
 const EXPIRE_TIME = 60 * 5;
 
-router.get('/getGetObjectSignedUrl', (req, res, next) => {
+router.get('/getGetObjectSignedUrl', async (req, res, next) => {
     let {dir, hashedFileName} = req.query;
     try {
-        const signedUrl = s3.getSignedUrl('getObject', {
+        const signedUrl = await s3.getSignedUrl('getObject', {
             Bucket: BUCKET_NAME,
             Key: `${dir}${hashedFileName}`,
             Expires: EXPIRE_TIME
@@ -24,18 +24,18 @@ router.get('/getGetObjectSignedUrl', (req, res, next) => {
                     expireTime: EXPIRE_TIME
                 })
             );
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        console.log(error);
         res.json(
-            new ErrorResponse(e)
+            new ErrorResponse(error)
         );
     }
 });
 
-router.get('/getPutObjectSignedUrl', (req, res, next) => {
+router.get('/getPutObjectSignedUrl', async (req, res, next) => {
     let {dir, hashedFileName, fileType} = req.query;
     try {
-        const signedUrl = s3.getSignedUrl('putObject', {
+        const signedUrl = await s3.getSignedUrl('putObject', {
             Bucket: BUCKET_NAME,
             Key: `${dir}${hashedFileName}`,
             Expires: EXPIRE_TIME,
@@ -47,10 +47,10 @@ router.get('/getPutObjectSignedUrl', (req, res, next) => {
                     expireTime: EXPIRE_TIME
                 })
             );
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        console.log(error);
         res.json(
-            new ErrorResponse(e)
+            new ErrorResponse(error)
         );
     }
 });
