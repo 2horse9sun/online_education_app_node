@@ -28,7 +28,7 @@ jobs:
           S3_BUCKET=${{ secrets.S3_BUCKET }}
           S3_REGION=${{ secrets.S3_REGION }}
           EOF
-          echo "cat .env"
+          cat .env
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
