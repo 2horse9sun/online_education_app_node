@@ -29,7 +29,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/$SERVICE_NAME:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{env.SERVICE_NAME}}:latest
       -
         name: Pull and Run on EC2
         uses: appleboy/ssh-action@master
@@ -38,7 +38,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/$SERVICE_NAME:latest
-            docker stop $SERVICE_NAME
-            docker remove $SERVICE_NAME
-            docker run -d --name $SERVICE_NAME -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/$SERVICE_NAME:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{env.SERVICE_NAME}}:latest
+            docker stop ${{env.SERVICE_NAME}}
+            docker remove ${{env.SERVICE_NAME}}
+            docker run -d --name ${{env.SERVICE_NAME}} -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/${{env.SERVICE_NAME}}:latest
