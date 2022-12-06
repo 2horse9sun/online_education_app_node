@@ -28,13 +28,13 @@ router.get('/list', (req, res, next) => {
         author = req.session.username
     }
 
-//     const result = getList(author, keyword)
-//     return result.then(listData => {
-//         res.json(
-//             new SuccessModel(listData)
-//         )
-//     })
-// });
+    const result = getList(author, keyword)
+    return result.then(listData => {
+        res.json(
+            new SuccessModel(listData)
+        )
+    })
+});
 
 // router.get('/detail', (req, res, next) => {
 //     const result = getDetail(req.query.id)
