@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+// const logger = require('morgan');
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 
@@ -19,15 +19,15 @@ const lessonRouter = require('./routes/lesson');
 const app = express();
 
 
-// logger
-app.use(logger('dev'));
-const logFileName = path.join(__dirname, 'logs', 'access.log')
-const writeStream = fs.createWriteStream(logFileName, {
-  flags: 'a'
-})
-app.use(logger('combined', {
-  stream: writeStream
-}));
+// // logger
+// app.use(logger('dev'));
+// const logFileName = path.join(__dirname, 'logs', 'access.log')
+// const writeStream = fs.createWriteStream(logFileName, {
+//   flags: 'a'
+// })
+// app.use(logger('combined', {
+//   stream: writeStream
+// }));
 
 
 
