@@ -40,5 +40,5 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{env.SERVICE_NAME}}:latest
             docker stop ${{env.SERVICE_NAME}}
-            docker remove ${{env.SERVICE_NAME}}
+            docker rm ${{env.SERVICE_NAME}}
             docker run -d --name ${{env.SERVICE_NAME}} -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/${{env.SERVICE_NAME}}:latest
