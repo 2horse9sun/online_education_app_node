@@ -9,7 +9,8 @@ const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 
 const blogRouter = require('./routes/blog');
-const userRouter = require('./routes/user');
+
+const userAccountRouter = require('./routes/user_account');
 const courseRouter = require('./routes/course');
 const assignmentRouter = require('./routes/assignment');
 const s3Router = require('./routes/s3');
@@ -51,6 +52,7 @@ app.use(cookieParser());
 // }))
 
 // Routers
+app.use('/api/user_account', userAccountRouter);
 app.use('/api/course', courseRouter);
 app.use('/api/assignment', assignmentRouter);
 app.use('/api/s3', s3Router);

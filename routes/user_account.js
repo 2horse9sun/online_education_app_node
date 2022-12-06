@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { login } = require('../controller/user');
+const { 
+    getUserInfoByUserId,
+    login 
+} = require('../controller/user_account');
+
+router.get('/getUserInfoByUserId', async (req, res, next) => {
+    let {user_id} = req.query;
+    const result = await getUserInfoByUserId(user_id);
+    return res.json(result);
+});
 
 // router.post('/login', function(req, res, next) {
 //     const { username, password } = req.body
