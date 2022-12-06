@@ -15,9 +15,6 @@ jobs:
       - 
         name: Check out the repo
         uses: actions/checkout@v3
-      - 
-        name: Create .env file for node.js
-        run: echo "${{ secrets.ENV_FILE }}" > .env
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -47,4 +44,4 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{env.SERVICE_NAME}}:latest
             docker stop ${{env.SERVICE_NAME}}
             docker rm ${{env.SERVICE_NAME}}
-            docker run -d --name ${{env.SERVICE_NAME}} -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/${{env.SERVICE_NAME}}:latest
+            docker run -d --name ${{env.SERVICE_NAME}} -p 8000:8000 --env-file ./.env ${{ secrets.DOCKERHUB_USERNAME }}/${{env.SERVICE_NAME}}:latest

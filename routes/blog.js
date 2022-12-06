@@ -36,14 +36,14 @@ router.get('/list', (req, res, next) => {
     })
 });
 
-// router.get('/detail', (req, res, next) => {
-//     const result = getDetail(req.query.id)
-//     return result.then(data => {
-//         res.json(
-//             new SuccessModel(data)
-//         )
-//     })
-// });
+router.get('/detail', (req, res, next) => {
+    const result = getDetail(req.query.id)
+    return result.then(data => {
+        res.json(
+            new SuccessModel(data)
+        )
+    })
+});
 
 // router.post('/new', loginCheck, (req, res, next) => {
 //     req.body.author = req.session.username
