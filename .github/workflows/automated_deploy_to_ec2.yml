@@ -13,10 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - 
+        name: Check out the repo
+        uses: actions/checkout@v3
+      - 
         name: Create .env file for node.js
-        run: |
-          echo "${{ secrets.ENV_FILE }}" > .env
-          cat .env
+        run: echo "${{ secrets.ENV_FILE }}" > .env
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
