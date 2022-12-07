@@ -6,7 +6,7 @@ const {SuccessResponse, ErrorResponse} = require('../utils/ResponseModel');
 const getUserInfoByUserId = async (user_id) => {
     try {
         let sql = `
-        SELECT * FROM user_account
+        SELECT id, username, role, profile_id, avatar FROM user_account
         WHERE id=${user_id};
         `;
         let res = await exec(sql);

@@ -4,13 +4,14 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
-// const logger = require('morgan');
+const logger = require('morgan');
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 
 const blogRouter = require('./routes/blog');
 
 const userAccountRouter = require('./routes/user_account');
+const studentRouter = require('./routes/student');
 const courseRouter = require('./routes/course');
 const assignmentRouter = require('./routes/assignment');
 const s3Router = require('./routes/s3');
@@ -20,8 +21,8 @@ const lessonRouter = require('./routes/lesson');
 const app = express();
 
 
-// // logger
-// app.use(logger('dev'));
+// logger
+app.use(logger('dev'));
 // const logFileName = path.join(__dirname, 'logs', 'access.log')
 // const writeStream = fs.createWriteStream(logFileName, {
 //   flags: 'a'
@@ -53,6 +54,7 @@ app.use(cookieParser());
 
 // Routers
 app.use('/api/user_account', userAccountRouter);
+app.use('/api/student', studentRouter);
 app.use('/api/course', courseRouter);
 app.use('/api/assignment', assignmentRouter);
 app.use('/api/s3', s3Router);
